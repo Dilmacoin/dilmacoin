@@ -1031,7 +1031,31 @@ void PrintExceptionContinue(std::exception* pex, const char* pszThread)
 boost::filesystem::path GetDefaultDataDir()
 {
     namespace fs = boost::filesystem;
-    return fs::path(".");
+    // Windows < Vista: C:\Documents and Settings\Username\Application Data\Bitcoin
+    // Windows >= Vista: C:\Users\Username\AppData\Roaming\Bitcoin
+    // Mac: ~/Library/Application Support/Bitcoin
+    // Unix: ~/.bitcoin
+#ifdef WIN32
+    // Windows
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Dilmacoin";
+#else
+    fs::path pathRet;
+    char* pszHome = getenv("HOME");
+    if (pszHome == NULL || strlen(pszHome) == 0)
+        pathRet = fs::path("/");
+    else
+        pathRet = fs::path(pszHome);
+#ifdef MAC_OSX
+    // Mac
+    pathRet /= "Library/Application Support";
+    fs::create_directory(pathRet);
+    return pathRet / "Dilmacoin";
+#else
+    // Unix
+    return pathRet / ".dilmacoin";
+#endif
+#endif
+//    return fs::path(".");
 }
 
 const boost::filesystem::path &GetDataDir(bool fNetSpecific)
