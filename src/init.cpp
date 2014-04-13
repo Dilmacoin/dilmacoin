@@ -10,6 +10,7 @@
 #include "init.h"
 #include "util.h"
 #include "ui_interface.h"
+#include "checkpointsync.h"
 
 #include <boost/filesystem.hpp>
 #include <boost/filesystem/fstream.hpp>
@@ -100,7 +101,6 @@ void Shutdown()
     ShutdownRPCMining();
     if (pwalletMain)
         bitdb.Flush(false);
-    GenerateBitcoins(false, NULL);
     StopNode();
     {
         LOCK(cs_main);
@@ -307,7 +307,7 @@ std::string HelpMessage()
         "  -socks=<n>             " + _("Select the version of socks proxy to use (4-5, default: 5)") + "\n" +
         "  -tor=<ip:port>         " + _("Use proxy to reach tor hidden services (default: same as -proxy)") + "\n"
         "  -dns                   " + _("Allow DNS lookups for -addnode, -seednode and -connect") + "\n" +
-        "  -port=<port>           " + _("Listen for connections on <port> (default: 11056 or testnet: 5744)") + "\n" +
+        "  -port=<port>           " + _("Listen for connections on <port> (default: 11057 or testnet: 5744)") + "\n" +
         "  -maxconnections=<n>    " + _("Maintain at most <n> connections to peers (default: 125)") + "\n" +
         "  -addnode=<ip>          " + _("Add a node to connect to and attempt to keep the connection open") + "\n" +
         "  -connect=<ip>          " + _("Connect only to the specified node(s)") + "\n" +
@@ -350,7 +350,7 @@ std::string HelpMessage()
 #endif
         "  -rpcuser=<user>        " + _("Username for JSON-RPC connections") + "\n" +
         "  -rpcpassword=<pw>      " + _("Password for JSON-RPC connections") + "\n" +
-        "  -rpcport=<port>        " + _("Listen for JSON-RPC connections on <port> (default: 21056 or testnet: 5745)") + "\n" +
+        "  -rpcport=<port>        " + _("Listen for JSON-RPC connections on <port> (default: 21057 or testnet: 5745)") + "\n" +
         "  -rpcallowip=<ip>       " + _("Allow JSON-RPC connections from specified IP address") + "\n" +
 #ifndef QT_GUI
         "  -rpcconnect=<ip>       " + _("Send commands to node running on <ip> (default: 127.0.0.1)") + "\n" +
@@ -634,6 +634,12 @@ bool AppInit2(boost::thread_group& threadGroup)
             return InitError(strprintf(_("Invalid amount for -mininput=<amount>: '%s'"), mapArgs["-mininput"].c_str()));
     }
 
+	if (mapArgs.count("-checkpointkey")) // ppcoin: checkpoint master priv key
+    {
+        if (!SetCheckpointPrivKey(GetArg("-checkpointkey", "")))
+            return InitError(_("Unable to sign checkpoint, wrong checkpointkey?"));
+    }
+	
     // ********************************************************* Step 4: application initialization: dir lock, daemonize, pidfile, debug log
 
     std::string strDataDir = GetDataDir().string();
@@ -1124,10 +1130,6 @@ bool AppInit2(boost::thread_group& threadGroup)
     InitRPCMining();
     if (fServer)
         StartRPCThreads();
-
-    // Generate coins in the background
-    if (pwalletMain)
-        GenerateBitcoins(GetBoolArg("-gen", false), pwalletMain);
 
     // ********************************************************* Step 12: finished
 

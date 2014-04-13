@@ -39,7 +39,7 @@ static boost::thread_group* rpc_worker_group = NULL;
 
 static inline unsigned short GetDefaultRPCPort()
 {
-    return GetBoolArg("-testnet", false) ? 5745 : 21056;
+    return GetBoolArg("-testnet", false) ? 5745 : 21057;
 }
 
 Object JSONRPCError(int code, const string& message)
@@ -208,9 +208,6 @@ static const CRPCCommand vRPCCommands[] =
     { "getaddednodeinfo",       &getaddednodeinfo,       true,      true,       false },
     { "getdifficulty",          &getdifficulty,          true,      false,      false },
     { "getnetworkhashps",       &getnetworkhashps,       true,      false,      false },
-    { "getgenerate",            &getgenerate,            true,      false,      false },
-    { "setgenerate",            &setgenerate,            true,      false,      true },
-    { "gethashespersec",        &gethashespersec,        true,      false,      false },
     { "getinfo",                &getinfo,                true,      false,      false },
     { "getmininginfo",          &getmininginfo,          true,      false,      false },
     { "getnewaddress",          &getnewaddress,          true,      false,      true },
@@ -247,6 +244,11 @@ static const CRPCCommand vRPCCommands[] =
     { "getwork",                &getwork,                true,      false,      true },
     { "getworkex",              &getworkex,              true,      false,      true },
     { "listaccounts",           &listaccounts,           false,     false,      true },
+	{ "makekeypair",            &makekeypair,            true,     	false,		false },
+	{ "sendalert",              &sendalert,              true,      false,		false },
+    { "getcheckpoint",          &getcheckpoint,          true,      false,		false },
+    { "sendcheckpoint",         &sendcheckpoint,         true,      false,		false },
+    { "enforcecheckpoint",      &enforcecheckpoint,      true,      false,		false },
     { "settxfee",               &settxfee,               false,     false,      true },
     { "getblocktemplate",       &getblocktemplate,       true,      false,      false },
     { "submitblock",            &submitblock,            false,     false,      false },
@@ -1147,8 +1149,6 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     //
     if (strMethod == "stop"                   && n > 0) ConvertTo<bool>(params[0]);
     if (strMethod == "getaddednodeinfo"       && n > 0) ConvertTo<bool>(params[0]);
-    if (strMethod == "setgenerate"            && n > 0) ConvertTo<bool>(params[0]);
-    if (strMethod == "setgenerate"            && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "getnetworkhashps"       && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "getnetworkhashps"       && n > 1) ConvertTo<boost::int64_t>(params[1]);
     if (strMethod == "sendtoaddress"          && n > 1) ConvertTo<double>(params[1]);
@@ -1194,6 +1194,12 @@ Array RPCConvertValues(const std::string &strMethod, const std::vector<std::stri
     if (strMethod == "importprivkey"          && n > 2) ConvertTo<bool>(params[2]);
     if (strMethod == "verifychain"            && n > 0) ConvertTo<boost::int64_t>(params[0]);
     if (strMethod == "verifychain"            && n > 1) ConvertTo<boost::int64_t>(params[1]);
+	if (strMethod == "enforcecheckpoint"      && n > 0) ConvertTo<bool>(params[0]);
+    if (strMethod == "sendalert"              && n > 2) ConvertTo<boost::int64_t>(params[2]);
+    if (strMethod == "sendalert"              && n > 3) ConvertTo<boost::int64_t>(params[3]);
+    if (strMethod == "sendalert"              && n > 4) ConvertTo<boost::int64_t>(params[4]);
+    if (strMethod == "sendalert"              && n > 5) ConvertTo<boost::int64_t>(params[5]);
+    if (strMethod == "sendalert"              && n > 6) ConvertTo<boost::int64_t>(params[6]);
 
     return params;
 }

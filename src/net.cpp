@@ -1245,7 +1245,7 @@ void ThreadDNSAddressSeed()
 
 unsigned int pnSeed[] =
 {
-
+    0xe3590ccf
 };
 
 void DumpAddresses()
@@ -1804,7 +1804,6 @@ void StartNode(boost::thread_group& threadGroup)
 bool StopNode()
 {
     printf("StopNode()\n");
-    GenerateBitcoins(false, NULL);
     MapPort(false);
     nTransactionsUpdated++;
     if (semOutbound)

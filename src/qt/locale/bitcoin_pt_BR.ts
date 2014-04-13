@@ -4,12 +4,12 @@
     <name>AboutDialog</name>
     <message>
         <location filename="../forms/aboutdialog.ui" line="+14"/>
-        <source>About Litecoin</source>
+        <source>About Dilmacoin</source>
         <translation>Sobre o DilmaCoin</translation>
     </message>
     <message>
         <location line="+39"/>
-        <source>&lt;b&gt;Litecoin&lt;/b&gt; version</source>
+        <source>&lt;b&gt;Dilmacoin&lt;/b&gt; version</source>
         <translation>Versão do &lt;b&gt;DilmaCoin&lt;/b&gt;</translation>
     </message>
     <message>
@@ -34,7 +34,7 @@ Este produto inclui software desenvolvido pelo Projeto OpenSSL para uso no OpenS
     </message>
     <message>
         <location line="+0"/>
-        <source>The Litecoin developers</source>
+        <source>The Dilmacoin developers</source>
         <translation>Desenvolvedores do DilmaCoin</translation>
     </message>
 </context>
@@ -67,7 +67,7 @@ Este produto inclui software desenvolvido pelo Projeto OpenSSL para uso no OpenS
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="+63"/>
-        <source>These are your Litecoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</source>
+        <source>These are your Dilmacoin addresses for receiving payments. You may want to give a different one to each sender so you can keep track of who is paying you.</source>
         <translation>Estes são os seus endereços DilmaCoin para receber pagamentos. Você pode querer enviar um endereço diferente para cada remetente, para acompanhar quem está pagando.</translation>
     </message>
     <message>
@@ -82,7 +82,7 @@ Este produto inclui software desenvolvido pelo Projeto OpenSSL para uso no OpenS
     </message>
     <message>
         <location line="+11"/>
-        <source>Sign a message to prove you own a Litecoin address</source>
+        <source>Sign a message to prove you own a Dilmacoin address</source>
         <translation>Assine uma mensagem para provar que você é dono de um endereço DilmaCoin</translation>
     </message>
     <message>
@@ -107,7 +107,7 @@ Este produto inclui software desenvolvido pelo Projeto OpenSSL para uso no OpenS
     </message>
     <message>
         <location line="-44"/>
-        <source>Verify a message to ensure it was signed with a specified Litecoin address</source>
+        <source>Verify a message to ensure it was signed with a specified Dilmacoin address</source>
         <translation>Verificar mensagem para se assegurar que ela foi assinada pelo dono de um endereço DilmaCoin específico.</translation>
     </message>
     <message>
@@ -122,7 +122,7 @@ Este produto inclui software desenvolvido pelo Projeto OpenSSL para uso no OpenS
     </message>
     <message>
         <location filename="../addressbookpage.cpp" line="-5"/>
-        <source>These are your Litecoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
+        <source>These are your Dilmacoin addresses for sending payments. Always check the amount and the receiving address before sending coins.</source>
         <translation>Estes são os seus endereços DilmaCoin para receber pagamentos. Você pode querer enviar um endereço diferente para cada remetente, para acompanhar quem está pagando.</translation>
     </message>
     <message>
@@ -248,7 +248,7 @@ Este produto inclui software desenvolvido pelo Projeto OpenSSL para uso no OpenS
     </message>
     <message>
         <location line="+1"/>
-        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR LITECOINS&lt;/b&gt;!</source>
+        <source>Warning: If you encrypt your wallet and lose your passphrase, you will &lt;b&gt;LOSE ALL OF YOUR DILMACOINS&lt;/b&gt;!</source>
         <translation>Aviso: Se você criptografar sua carteira e perder sua senha, você vai &lt;b&gt;perder todos os seus DilmaCoinS!&lt;/b&gt;</translation>
     </message>
     <message>
