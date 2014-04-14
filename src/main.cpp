@@ -32,7 +32,7 @@ CTxMemPool mempool;
 unsigned int nTransactionsUpdated = 0;
 
 map<uint256, CBlockIndex*> mapBlockIndex;
-uint256 hashGenesisBlock("0x2bf1639cd3f4f012098e4aee2b1d3093e2be08a4d2485c7954001a27a68ab5a2");
+uint256 hashGenesisBlock("0x00000841aba132bf31d769cd0cba043c853591ea8a17fba4d206e8e1413fb63d");
 static CBigNum bnProofOfWorkLimit(~uint256(0) >> 20); // DilmaCoin: starting difficulty is 1 / 2^12
 CBlockIndex* pindexGenesisBlock = NULL;
 int nBestHeight = -1;
@@ -1270,6 +1270,11 @@ bool CheckProofOfWork(uint256 hash, unsigned int nBits)
 {
     CBigNum bnTarget;
     bnTarget.SetCompact(nBits);
+
+    
+    printf("nBits=%d\n", nBits);
+    printf("hash=%s\n", hash.GetHex().c_str() );
+    printf("bnTarget=%s\n",  bnTarget.getuint256().GetHex().c_str() );
 
     // Check range
     if (bnTarget <= 0 || bnTarget > bnProofOfWorkLimit)
@@ -2827,7 +2832,7 @@ bool LoadBlockIndex()
         pchMessageStart[1] = 0xc1;
         pchMessageStart[2] = 0xb7;
         pchMessageStart[3] = 0xdc;
-        hashGenesisBlock = uint256("0x2bf1639cd3f4f012098e4aee2b1d3093e2be08a4d2485c7954001a27a68ab5a2");
+        hashGenesisBlock = uint256("0x00000841aba132bf31d769cd0cba043c853591ea8a17fba4d206e8e1413fb63d");
     }
 
     //
@@ -2874,22 +2879,56 @@ bool InitBlockIndex() {
         block.nVersion = 1;
         block.nTime    = 1397453713;
         block.nBits    = 0x1e0ffff0;
-        block.nNonce   = 2084685661;
+        block.nNonce   = 2084767945;
 
         if (fTestNet)
         {
             block.nTime    = 1397453713;
-            block.nNonce   = 2084685661;
+            block.nNonce   = 2084767945;
         }
 
         //// debug print
         uint256 hash = block.GetHash();
+        printf("block.nTime = %u \n", block.nTime);
+        printf("block.nBits = %u \n", block.nBits);
+        printf("block.nNonce = %u \n", block.nNonce);
         printf("%s\n", hash.ToString().c_str());
         printf("%s\n", hashGenesisBlock.ToString().c_str());
         printf("%s\n", block.hashMerkleRoot.ToString().c_str());
-        assert(block.hashMerkleRoot == uint256("0xdf5d4cddc97c45da161f81032af08c18a6b7caecf0fb13d416108d61872cb618"));
         block.print();
+
+        assert(block.hashMerkleRoot == uint256("0xea77fffdc35d156130650516a5984deb50a1b3468d6ce1f7e5d0dff02019543e"));
+
+        // mine the genesis block 
+        if (false &&  block.GetHash() != hashGenesisBlock) {
+           // This will figure out a valid hash and Nonce if you're
+           // creating a different genesis block:
+           uint256 hashTarget = CBigNum().SetCompact(block.nBits).getuint256();
+           while (block.GetHash() > hashTarget)
+           {
+               ++block.nNonce;
+               if (block.nNonce == 0)
+               {
+                   printf("NONCE WRAPPED, incrementing time");
+                   ++block.nTime;
+               }
+           }
+           hash = block.GetHash();
+        }
+
+        printf("block.nTime = %u \n", block.nTime);
+        printf("block.nBits = %u \n", block.nBits);
+        printf("block.nNonce = %u \n", block.nNonce);
+        printf("%s\n", hash.ToString().c_str());
+        printf("%s\n", hashGenesisBlock.ToString().c_str());
+        printf("%s\n", block.hashMerkleRoot.ToString().c_str());
+        block.print();
+
+
         assert(hash == hashGenesisBlock);
+
+
+
 
         // Start new block file
         try {
@@ -2907,6 +2946,10 @@ bool InitBlockIndex() {
         } catch(std::runtime_error &e) {
             return error("LoadBlockIndex() : failed to initialize block database: %s", e.what());
         }
+
+        block.print();
+
+
     }
 
 	// If checkpoint master key changed must reset sync-checkpoint
