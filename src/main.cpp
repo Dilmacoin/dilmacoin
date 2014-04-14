@@ -2860,7 +2860,7 @@ bool InitBlockIndex() {
         //   vMerkleTree: 97ddfbbae6
 
         // Genesis block
-        const char* pszTimestamp = "Mtgox is down";
+        const char* pszTimestamp = "Ou voces param com essa zoeira ou eu corto o bolsa familia!";
         CTransaction txNew;
         txNew.vin.resize(1);
         txNew.vout.resize(1);
@@ -2872,13 +2872,13 @@ bool InitBlockIndex() {
         block.hashPrevBlock = 0;
         block.hashMerkleRoot = block.BuildMerkleTree();
         block.nVersion = 1;
-        block.nTime    = 1395489616;
+        block.nTime    = 1397453713;
         block.nBits    = 0x1e0ffff0;
         block.nNonce   = 2084685661;
 
         if (fTestNet)
         {
-            block.nTime    = 1395489616;
+            block.nTime    = 1397453713;
             block.nNonce   = 2084685661;
         }
 
