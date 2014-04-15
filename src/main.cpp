@@ -1065,6 +1065,24 @@ uint256 static GetOrphanRoot(const CBlockHeader* pblock)
 int64 static GetBlockValue(int nHeight, int64 nFees)
 {
     int64 nSubsidy = 48 * COIN;
+    if (nHeight == 1) { 
+      // 458k pre-minerados para serem distribuidos no DilmaFamilia 
+      //  quantidade aproximada que os mineradores da moeda antiga
+      //  mineraram no primeiro dia com a dificuldade zerada
+      nSubsidy = 458000 * COIN;  
+    } else if ( nHeight == 2 )  { 
+      // 1 milhao pre-minerados para serem trocados com os atuais 
+      // mineradores da moeda antiga a taxa de 1 por 1
+      nSubsidy = 1000000 * COIN;
+    } else if ( nHeight > 2 && nHeight <= 7200 ) { 
+      // durante os primeiros 5 dias, havera apenas 1 moeda de premio
+      // pois os primeiros 5 diass serao utilizados pelo desenvolvedor 
+      // para testar a moeda e gerar checkpoints para garantir a seguranca 
+      // da moeda contra forks iniciais.
+      nSubsidy = 1 * COIN; 
+    }
+  
+
 
     // Subsidy is cut in half every 525600 blocks, which will occur approximately every year
     nSubsidy >>= (nHeight / 525600); // Dilmacoin: 525,600 blocks in ~1 year
@@ -1246,23 +1264,15 @@ unsigned int static GetNextWorkRequired_V2(const CBlockIndex* pindexLast, const 
 
 unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
-        int DiffMode = 1;
-        if (fTestNet) {
-				DiffMode = 2;
-        } else {
-        		// First 30,000 blocks are not covered by KGW
-        		// This will allow the pre-mine of 1,440,000 coins 
-        		// that will be distributed through DilmaFamilia ( Wellfare program )
-        		// and to support the development of the coin. 
-			if (pindexLast->nHeight + 1 >= 30000) { 
-				DiffMode = 2;
-			}
-        }
+    int DiffMode = 1;
+    if (fTestNet) {
+        DiffMode = 2;
+    } 
         
-        if (DiffMode == 1) { 
-			return GetNextWorkRequired_V1(pindexLast, pblock); 
-		}
-		return GetNextWorkRequired_V2(pindexLast, pblock);
+    if (DiffMode == 1) { 
+      return GetNextWorkRequired_V1(pindexLast, pblock); 
+    }
+    return GetNextWorkRequired_V2(pindexLast, pblock);
 }
 
 
@@ -3223,7 +3233,7 @@ bool static AlreadyHave(const CInv& inv)
 // The message start string is designed to be unlikely to occur in normal data.
 // The characters are rarely used upper ASCII, not valid as UTF-8, and produce
 // a large 4-byte int at any alignment.
-unsigned char pchMessageStart[4] = { 0xfb, 0xc0, 0xb6, 0xdb }; // Litecoin: increase each by adding 2 to bitcoin's value.
+unsigned char pchMessageStart[4] = { 0xc0, 0xc0, 0xc0, 0xc0 }; // Dilmacoin: same as DOGE
 
 
 void static ProcessGetData(CNode* pfrom)

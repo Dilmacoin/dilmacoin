@@ -93,7 +93,7 @@ void RPCTypeCheck(const Object& o,
 int64 AmountFromValue(const Value& value)
 {
     double dAmount = value.get_real();
-    if (dAmount <= 0.0 || dAmount > 50400000)
+    if (dAmount <= 0.0 || dAmount > 50400000.0)
         throw JSONRPCError(RPC_TYPE_ERROR, "Invalid amount");
     int64 nAmount = roundint64(dAmount * COIN);
     if (!MoneyRange(nAmount))
@@ -981,9 +981,10 @@ void ServiceConnection(AcceptedConnection *conn)
         {
             // Parse request
             Value valRequest;
-            if (!read_string(strRequest, valRequest))
+            if (!read_string(strRequest, valRequest)) {
+                printf("Parse error");
                 throw JSONRPCError(RPC_PARSE_ERROR, "Parse error");
-
+            }
             string strReply;
 
             // singleton request
@@ -998,8 +999,10 @@ void ServiceConnection(AcceptedConnection *conn)
             // array of requests
             } else if (valRequest.type() == array_type)
                 strReply = JSONRPCExecBatch(valRequest.get_array());
-            else
+            else {
+                printf("Top-level object parse error");
                 throw JSONRPCError(RPC_PARSE_ERROR, "Top-level object parse error");
+            }
 
             conn->stream() << HTTPReply(HTTP_OK, strReply, fRun) << std::flush;
         }
@@ -1010,6 +1013,7 @@ void ServiceConnection(AcceptedConnection *conn)
         }
         catch (std::exception& e)
         {
+            printf("exception : %s", e.what() );
             ErrorReply(conn->stream(), JSONRPCError(RPC_PARSE_ERROR, e.what()), jreq.id);
             break;
         }

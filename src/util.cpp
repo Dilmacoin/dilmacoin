@@ -1037,7 +1037,7 @@ boost::filesystem::path GetDefaultDataDir()
     // Unix: ~/.bitcoin
 #ifdef WIN32
     // Windows
-    return GetSpecialFolderPath(CSIDL_APPDATA) / "Dilmacoin";
+    return GetSpecialFolderPath(CSIDL_APPDATA) / "Dilmacoin2";
 #else
     fs::path pathRet;
     char* pszHome = getenv("HOME");
@@ -1049,10 +1049,10 @@ boost::filesystem::path GetDefaultDataDir()
     // Mac
     pathRet /= "Library/Application Support";
     fs::create_directory(pathRet);
-    return pathRet / "Dilmacoin";
+    return pathRet / "Dilmacoin2";
 #else
     // Unix
-    return pathRet / ".dilmacoin";
+    return pathRet / ".dilmacoin2";
 #endif
 #endif
 //    return fs::path(".");
