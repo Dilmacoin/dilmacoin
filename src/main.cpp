@@ -1264,14 +1264,6 @@ unsigned int static GetNextWorkRequired_V2(const CBlockIndex* pindexLast, const 
 
 unsigned int static GetNextWorkRequired(const CBlockIndex* pindexLast, const CBlockHeader *pblock)
 {
-    int DiffMode = 1;
-    if (fTestNet) {
-        DiffMode = 2;
-    } 
-        
-    if (DiffMode == 1) { 
-      return GetNextWorkRequired_V1(pindexLast, pblock); 
-    }
     return GetNextWorkRequired_V2(pindexLast, pblock);
 }
 
